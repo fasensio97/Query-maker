@@ -5,22 +5,27 @@
 
 
 import streamlit as st
+import requests
 
-# Agregar un título a la página
-st.title("Consulta a la base de datos")
+st.title("Consulta de Datos")
 
-# Crear un campo de entrada de texto para la consulta
-query = st.text_input("Ingrese su consulta aquí:")
+# Solicitar al usuario que ingrese la query
+query = st.text_input("Ingrese su query")
 
-# Mostrar la consulta ingresada por el usuario
-st.write("Consulta:", query)
+# Mostrar la query ingresada por el usuario
+st.write("Query ingresada:", query)
 
-# Si se ha ingresado una consulta, realizar una acción
-if query:
-    # Aquí podrías incluir la lógica necesaria para hacer la consulta a la base de datos
-    # y almacenar la respuesta en la variable "answer"
-    answer = "Esta es la respuesta a su consulta: " + query
-    
-    # Mostrar la respuesta obtenida
-    st.write(answer)
+# Hacer una petición a la API para obtener los datos
+url = "https://api.example.com/data"
+params = {"query": query}
+response = requests.get(url, params=params)
 
+# Verificar si la petición fue exitosa
+if response.status_code == 200:
+    # Obtener la respuesta en formato JSON
+    data = response.json()
+    # Mostrar la respuesta en la interfaz de usuario
+    st.write("Respuesta:", data)
+else:
+    # Mostrar un mensaje de error si la petición falló
+    st.write("Error al obtener la respuesta")
